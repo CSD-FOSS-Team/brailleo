@@ -12,7 +12,7 @@ def mappingToNumbers(n):
             }[n]
 
 
-bitToBraille = dict {
+bitToBraille = dict ({
         "('0', '0', '0', '0', '0', '0')": '',
         "('0', '0', '0', '0', '0', '1')": '6',
         "('0', '0', '0', '0', '1', '0')": '5',
@@ -77,13 +77,13 @@ bitToBraille = dict {
         "('1', '1', '1', '1', '0', '1')": '12346',
         "('1', '1', '1', '1', '1', '0')": '12345',
         "('1', '1', '1', '1', '1', '1')": '123456',
-}
+})
 
 
 res = dict ((v,k) for k,v in bitToBraille.items())
 
 
-
+print(res)
 
 
 shouldStop = False
@@ -102,6 +102,7 @@ while not shouldStop:
             stri = stri + corrNum
         except KeyError:
             pass
+    stri = ''.join(sorted(stri))
     print(stri)
-    bitToBraille(
+
 
