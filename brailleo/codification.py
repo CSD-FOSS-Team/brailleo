@@ -104,6 +104,6 @@ while not shouldStop:
     removes duplicate characters in numKey after sorting it
     '''
     numKey = ''.join(ch for ch, _ in itertools.groupby(sorted(numKey)))  
-    print(numToBraille[numKey])
+    print(numToBraille[numKey], end="", flush=True)
 
 
