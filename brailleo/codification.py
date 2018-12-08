@@ -1,4 +1,5 @@
 import getch
+import itertools
 
 
 def mappingToNumbers(n):
@@ -99,7 +100,10 @@ while not shouldStop:
             numKey = numKey + corrNumKey
         except KeyError:
             pass
-    numKey = ''.join(sorted(numKey))  #sorts numKey
+    '''
+    removes duplicate characters in numKey after sorting it
+    '''
+    numKey = ''.join(ch for ch, _ in itertools.groupby(sorted(numKey)))  
     print(numToBraille[numKey])
 
 
