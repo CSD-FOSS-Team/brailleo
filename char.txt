@@ -1,6 +1,6 @@
 # Number Input for corresponding Braille characters
 
-### Character
+### Character (for capitals add 46 (eg. 46 1 -> 'A'))
 α			1
 β			12
 γ			1245

@@ -93,17 +93,24 @@ while not shouldStop:
              break
         elif ord(key) == 27:          #esc   key
             shouldStop = True
+            print("\n")
+            break
+        elif ord(key) == 10:          #enter key
+            print("\n", end = "", flush=True)
+            break
+        elif ord(key) == 9:           #tab   key
+            print("\t", end = "", flush=True)
             break
         try:
             corrNumKey = mappingToNumbers(key)
-            print(corrNumKey)
+            #print(corrNumKey)
             numKey = numKey + corrNumKey
         except KeyError:
             pass
     '''
     removes duplicate characters in numKey after sorting it
     '''
-    numKey = ''.join(ch for ch, _ in itertools.groupby(sorted(numKey)))  
+    numKey = ''.join(ch for ch, _ in itertools.groupby(sorted(numKey)))
     print(numToBraille[numKey], end="", flush=True)
 
 
