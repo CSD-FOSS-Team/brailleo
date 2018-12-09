@@ -112,5 +112,3 @@ while not shouldStop:
     '''
     numKey = ''.join(ch for ch, _ in itertools.groupby(sorted(numKey)))
     print(numToBraille[numKey], end="", flush=True)
-
-
