@@ -1,2 +1,5 @@
-import braille.view.main as gui
-from braille. import
+import brailleo.view.main as gui
+
+
+def main():
+    pass
