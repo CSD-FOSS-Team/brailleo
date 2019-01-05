@@ -1,6 +1,8 @@
-import getch
 import itertools
-
+from pynput import keyboard # Monitoring
+from pynput.keyboard import Key, Controller    # Controlling
+import pyperclip #clipboard
+from time import sleep #timer
 
 def mappingToNumbers(n):
     return {
@@ -83,34 +85,83 @@ brailleToNum = dict ({
 
 numToBraille = dict ((v,k) for k,v in brailleToNum.items())
 
-
-shouldStop = False
-while not shouldStop:
-    numKey = ""
-    while True:
-        key = getch.getch()
-        if ord(key) == 32:            #space key
-             break
-        elif ord(key) == 27:          #esc   key
-            shouldStop = True
-            print("\n")
-            break
-        elif ord(key) == 10:          #enter key
-            print("\n", end = "", flush=True)
-            break
-        elif ord(key) == 9:           #tab   key
-            print("\t", end = "", flush=True)
-            break
-        try:
-            corrNumKey = mappingToNumbers(key)
-            #print(corrNumKey)
-            numKey = numKey + corrNumKey
-        except KeyError:
-            pass
-    '''
-    removes duplicate characters in numKey after sorting it
-    '''
-    numKey = ''.join(ch for ch, _ in itertools.groupby(sorted(numKey)))
-    print(numToBraille[numKey], end="", flush=True)
+#set keyboard controller
+keyboard_ctrl = Controller()
+#init numKey,ctrl_pressed
+numKey = ""
+ctrl_pressed = False
 
 
+#press function of the listener
+#detect if control is pressed:
+#   set ctrl_pressed to True
+def on_press(key):
+    global ctrl_pressed
+    try:
+        '{0}'.format(key.char)
+        #print('alphanumeric key {0} pressed'.format(key.char))
+    except AttributeError:
+        #print('special key {0} pressed'.format(key))
+        if key==Key.ctrl_l:
+            ctrl_pressed = True
+
+#release function of the listener
+#detect if key is char/num or special
+#if char/num and ctrl is not pressed
+#       press,release backspace one time
+#       set Numkey accordingly
+#if release Ecs
+#       end program
+#if release ctrl 
+#       set ctrl_pressed to False
+#if release space
+#       press,release backspace one time
+#       save last clipboard
+#       copy numKey's char to clipboard
+#       paste clipboard and wait 0.2 sec
+#       set clipboard back to it's vallue
+def on_release(key):
+    global numKey,ctrl_pressed
+    try:
+        '{0}'.format(key.char)
+        #print('alphanumeric key {0} release'.format(key.char))
+        if ctrl_pressed!=True:
+            keyboard_ctrl.press(Key.backspace)
+            keyboard_ctrl.release(Key.backspace)
+            try:
+                corrNumKey = mappingToNumbers(key.char)
+                #print(corrNumKey)
+                numKey = numKey + corrNumKey
+                #print(numKey)
+            except KeyError:
+                pass
+    except AttributeError:
+        #print('special key {0} release'.format(key))
+        if key == Key.esc:
+            return False
+        elif key == Key.ctrl_l:
+            ctrl_pressed = False
+        elif key == Key.space:
+            keyboard_ctrl.press(Key.backspace)
+            keyboard_ctrl.release(Key.backspace)
+            old_clipboard= pyperclip.paste()
+            numKey = ''.join(ch for ch, _ in itertools.groupby(sorted(numKey)))
+            #print('numKey is',numKey,'char is',numToBraille[numKey])
+            #print(numToBraille[numKey], end="", flush=True)
+            #copy gen char
+            pyperclip.copy(numToBraille[numKey])
+            #paste the char
+            with keyboard_ctrl.pressed(Key.ctrl_l):
+                keyboard_ctrl.type('v')
+            #wait some time for the cp perform
+            sleep(0.2) # Time in seconds.
+            #reset numkey and set clipboard back to it's vallue
+            numKey = ""
+            pyperclip.copy(old_clipboard)
+
+#set the listener
+# Collect events until released
+with keyboard.Listener(
+        on_release=on_release,
+        on_press=on_press) as listener:
+    listener.join()
