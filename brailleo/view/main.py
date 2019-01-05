@@ -9,6 +9,8 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog,
         QTextEdit, QToolBar)
 from PyQt5.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
 
+import itertools
+
 import webbrowser
 
 
@@ -21,10 +23,9 @@ else:
 
 
 class TextEdit(QMainWindow):
-    def __init__(self, fileName=None, parent=None, **kwargs):
+    def __init__(self, fileName=None, parent=None):
         super(TextEdit, self).__init__(parent)
 
-        sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
         self.setWindowIcon(QIcon(':/images/logo.png'))
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
         self.setupFileActions()
@@ -70,25 +71,13 @@ class TextEdit(QMainWindow):
         self.textEdit.copyAvailable.connect(self.actionCopy.setEnabled)
         QApplication.clipboard().dataChanged.connect(self.clipboardDataChanged)
 
+
         if fileName is None:
             fileName = ':/brailleo.html'
 
         if not self.load(fileName):
             self.fileNew()
 
-
-    def __del__(self):
-        # Restore sys.stdout
-        sys.stdout = sys.__stdout__
-
-
-    def normalOutputWritten(self, text):
-        # Append text to the QTextEdit
-        cursor = self.textEdit.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
-        cursor.insertText(text)
-        self.textEdit.setTextCursor(cursor)
-        self.textEdit.ensureCursorVisible()
 
     def closeEvent(self, e):
         if self.maybeSave():
