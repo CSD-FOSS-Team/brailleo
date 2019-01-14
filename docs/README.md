@@ -18,7 +18,7 @@
 [contributors-image]: https://img.shields.io/github/contributors/CSD-FOSS-Team/brailleo.svg
 [tokei-url]: https://github.com/CSD-FOSS-Team/brailleo/tree/master/pages
 [tokei-image]: https://tokei.rs/b1/github/CSD-FOSS-Team/brailleo?category=files
-[license-url]: https://github.com/CSD-FOSS-Team/brailleo/blob/master/LICENSE.md
+[license-url]: https://github.com/CSD-FOSS-Team/brailleo/blob/master/docs/LICENSE
 [license-image]: https://img.shields.io/github/license/CSD-FOSS-Team/brailleo.svg
 
 Το **brailleo** είναι αντιγραφέας και μεταγλωττιστής (transcriber/translator) της γλωσσας Braille. Είναι ένα ελαφρύ πρόγραμμα, απλό και εύχρηστο, καθώς απευθύνεται σε κάθε χρήστη. Υποστηρίζει πολλά λογισμικά (cross-platform). Υλοποιείται με πρωταρχικό σκοπό να αποτελέσει βοηθητικο εργαλείο εκμάθησης της γλωσσας Braille. Μιμούμενο τις ήδη υπάρχουσες ειδικές γραφομηχανές μέσω του πληκτρολογίου, προσφέρει μια ποιοτική και δωρεάν εναλλακτική, με κύρια χαρακτηριστικά την προσβασιμότητα (accessibility), αλλά και την προσαρμοστικότητα (customizability). 
